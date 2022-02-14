@@ -1,31 +1,31 @@
 import React from 'react';
+import { Message, MessageImg } from './styles/Messages.styled';
+import theme from './styles/theme';
 
 //@TODO styed comp theme
 
 const MessageSent = ({ message }) => {
   if (message.attachments.length > 0) {
     return (
-      <img
+      <MessageImg
+        isMyMessage={true}
         src={message.attachments[0].file}
         alt='message-attachment'
-        className='message-image'
-        style={{ float: 'right' }}
       />
     );
   }
 
   return (
-    <div
-      className='message'
+    <Message
       style={{
         float: 'right',
         marginRight: '18px',
         color: 'white',
-        backgroundColor: '#3B2A50',
+        backgroundColor: theme.colors.messageSend,
       }}
     >
       {message.text}
-    </div>
+    </Message>
   );
 };
 

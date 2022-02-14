@@ -1,6 +1,16 @@
 import MessageForm from './MessageForm';
 import MessageSent from './MessageSent';
 import MessageReceived from './MessageReceived';
+import { Feed, ChatTitle, ChatFormContainer } from './styles/ChatFeed.styled';
+
+import {
+  MessageWrapper,
+  MessageBlock,
+  ReadRecipts,
+  ReadRecipt,
+} from './styles/Messages.styled';
+
+import { Gap } from './styles/Helper.styled';
 
 //@TODO Add Message Component, LoadingSpinner, readRecipts
 
@@ -13,13 +23,10 @@ const ChatFeed = props => {
     chat.people.map(
       (person, idx) =>
         person.last.read === mess.id && (
-          <div
+          <ReadRecipt
             key={`read_${idx}`}
-            className='read-receipt'
-            style={{
-              float: isMyMessage ? 'right' : 'left',
-              backgroundImage: `url(${person.person.avatar})`,
-            }}
+            isMyMessage={isMyMessage}
+            avatar={person.person.avatar}
           />
         )
     );
@@ -33,8 +40,8 @@ const ChatFeed = props => {
       const isMyMessage = userName === message.sender.username;
 
       return (
-        <div key={`msg_${index}`} style={{ width: '100%' }}>
-          <div className='message-block'>
+        <MessageWrapper key={`msg_${index}`}>
+          <MessageBlock>
             {isMyMessage ? (
               <MessageSent message={message} />
             ) : (
@@ -43,17 +50,11 @@ const ChatFeed = props => {
                 lastMessage={messages[lastMessageKey]}
               />
             )}
-          </div>
-          <div
-            className='read-receipts'
-            style={{
-              marginRight: isMyMessage ? '18px' : '0',
-              marginLeft: isMyMessage ? '0px' : '69px',
-            }}
-          >
+          </MessageBlock>
+          <ReadRecipts isMyMessage={isMyMessage}>
             {/* {renderReadReceipts(message, isMyMessage)} */}
-          </div>
-        </div>
+          </ReadRecipts>
+        </MessageWrapper>
       );
     });
   };
@@ -61,19 +62,17 @@ const ChatFeed = props => {
   if (!chat) return 'Loading...';
 
   return (
-    <div className='chat-feed'>
-      <div className='chat-title-container'>
-        <div className='chat-title'>{chat?.title}</div>
-      </div>
+    <Feed>
+      <ChatTitle>{chat?.title}</ChatTitle>
 
       {renderMessages()}
 
-      <div style={{ height: '100px' }} />
+      <Gap />
 
-      <div className='message-form-container'>
+      <ChatFormContainer>
         <MessageForm {...props} chatId={activeChat} />
-      </div>
-    </div>
+      </ChatFormContainer>
+    </Feed>
   );
 };
 

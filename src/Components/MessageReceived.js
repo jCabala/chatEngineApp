@@ -1,4 +1,6 @@
 import React from 'react';
+import { Message, MessageImg } from './styles/Messages.styled';
+import theme from './styles/theme';
 
 const MessageReceived = ({ lastMessage, message }) => {
   const isFirstMessageByUser =
@@ -14,23 +16,22 @@ const MessageReceived = ({ lastMessage, message }) => {
       )}
 
       {message.attachments.length > 0 ? (
-        <img
+        <MessageImg
           src={message.attachments[0].file}
           alt='message-attachment'
-          className='message-image'
-          style={{ marginLeft: isFirstMessageByUser ? '4px' : '48px' }}
+          isMyMessage={false}
+          isFirst={isFirstMessageByUser}
         />
       ) : (
-        <div
-          className='message'
+        <Message
           style={{
             float: 'left',
-            backgroundColor: '#CABCDC',
+            backgroundColor: theme.colors.messageReceived,
             marginLeft: isFirstMessageByUser ? '4px' : '48px',
           }}
         >
           {message.text}
-        </div>
+        </Message>
       )}
     </div>
   );
